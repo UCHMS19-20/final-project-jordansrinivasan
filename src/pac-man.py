@@ -49,17 +49,26 @@ while True:
         pac.y -= 5
     if pressed_down:
         pac.y += 5
+
+    if pac.x > 736:
+        pac.x = 0
+        pac.y = pac.y
     
     rectangles_list = [
         pygame.Rect(67, 68, 80, 54),
         pygame.Rect(198, 68, 107, 54),
+        pygame.Rect(355, 0, 27, 122),
         pygame.Rect(433, 68, 107, 54),
-        pygame.Rect(589, 68, 80, 54),
+        pygame.Rect(589, 68, 81, 54),
         pygame.Rect(67, 173, 80, 27),
         pygame.Rect(278, 173, 182, 27),
-        pygame.Rect(589, 173, 80, 27)
+        pygame.Rect(589, 173, 81, 27),
+        pygame.Rect(198, 173, 27, 182),
+        pygame.Rect(513, 173, 27, 182),
+        pygame.Rect(198, 250.5, 107, 27),
+        pygame.Rect(355, 173, 27, 104.5),
+        pygame.Rect(433, 250.5, 107, 27),
 
-        
     ]
     for rect in rectangles_list:
         pygame.draw.rect(screen, (0, 255, 50), rect)
