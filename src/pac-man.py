@@ -2,7 +2,7 @@ import sys
 import pygame
 
 pygame.init()
-screen = pygame.display.set_mode((736, 736))
+screen = pygame.display.set_mode((588, 650), pygame.FULLSCREEN)
 pygame.display.flip()
 
 class Coordinates:
@@ -38,9 +38,6 @@ while True:
                 pressed_left = False
             elif event.key == pygame.K_RIGHT:
                 pressed_right = False
-        elif event.type == pygame.QUIT:
-            pygame.quit()
-    
     if pressed_left:
         pac.x -= 5
     if pressed_right:
@@ -50,21 +47,24 @@ while True:
     if pressed_down:
         pac.y += 5
 
-    if pac.x > 736:
+    if pac.x > 650:
         pac.x = 0
+        pac.y = pac.y
+    elif pac.x < 0:
+        pac.x = 650
         pac.y = pac.y
     
     rectangles_list = [
-        pygame.Rect(67, 68, 80, 54),
-        pygame.Rect(198, 68, 107, 54),
-        pygame.Rect(355, 0, 27, 122),
-        pygame.Rect(433, 68, 107, 54),
-        pygame.Rect(589, 68, 81, 54),
-        pygame.Rect(67, 173, 80, 27),
-        pygame.Rect(278, 173, 182, 27),
-        pygame.Rect(589, 173, 81, 27),
-        pygame.Rect(198, 173, 27, 182),
-        pygame.Rect(513, 173, 27, 182),
+        pygame.Rect(54, 54, 63, 44),
+        pygame.Rect(159, 54, 84, 44),
+        pygame.Rect(285, 0, 20, 98),
+        pygame.Rect(347, 54, 84, 44),
+        pygame.Rect(472, 54, 63, 44),
+        pygame.Rect(54, 139, 63, 20),
+        pygame.Rect(222, 139, 146, 20),
+        pygame.Rect(472, 139, 63, 20),
+        pygame.Rect(159, 139, 20, 146),
+        pygame.Rect(410.5, 139, 20, 146),
         pygame.Rect(198, 250.5, 107, 27),
         pygame.Rect(355, 173, 27, 104.5),
         pygame.Rect(433, 250.5, 107, 27),
@@ -74,4 +74,8 @@ while True:
         pygame.draw.rect(screen, (0, 255, 50), rect)
     
     pygame.display.flip()
+    
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_ESCAPE:
+            sys.exit()
     
