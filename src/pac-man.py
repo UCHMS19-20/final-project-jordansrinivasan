@@ -18,7 +18,7 @@ pressed_right = False
 while True:
     bg = pygame.image.load("src/img/pacman.png")
     screen.blit(bg, (0,0))
-    pygame.draw.circle(screen, (255, 255, 0), (pac.x, pac.y), 10, 0)    
+    pygame.draw.circle(screen, (255, 255, 0), (pac.x, pac.y), 9, 0)    
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
@@ -39,13 +39,13 @@ while True:
             elif event.key == pygame.K_RIGHT:
                 pressed_right = False
     if pressed_left:
-        pac.x -= 5
+        pac.x -= 3
     if pressed_right:
-        pac.x += 5
+        pac.x += 3
     if pressed_up:
-        pac.y -= 5
+        pac.y -= 3
     if pressed_down:
-        pac.y += 5
+        pac.y += 3
 
     if pac.x > 650:
         pac.x = 0
@@ -66,21 +66,44 @@ while True:
         pygame.Rect(159, 139, 20, 146),
         pygame.Rect(410.5, 139, 20, 146),
         pygame.Rect(159, 202, 84, 20),
-        pygame.Rect(285, 139, 20, 84),
+        pygame.Rect(285, 139, 20, 83),
         pygame.Rect(346.5, 202, 84, 20),
-        pygame.Rect(159, 326, 20, 84),
+        pygame.Rect(159, 326, 20, 83),
         pygame.Rect(222, 390, 146, 20),
-        pygame.Rect(410.5, 326, 20, 84),
-        pygame.Rect(54, 454, 63, 20),
-        pygame.Rect(159, 454, 84, 20),
-        pygame.Rect(285, 390, 20, 84),
-        pygame.Rect(347, 454, 84, 20),
-        pygame.Rect(472, 454, 63, 20)
-
-
+        pygame.Rect(410.5, 326, 20, 83),
+        pygame.Rect(54, 453, 63, 20),
+        pygame.Rect(159, 453, 84, 20),
+        pygame.Rect(285, 390, 20, 83),
+        pygame.Rect(347, 453, 84, 20),
+        pygame.Rect(472, 453, 63, 20),
+        pygame.Rect(0, 515, 54, 20),
+        pygame.Rect(97, 453, 20, 83),
+        pygame.Rect(472, 453, 20, 83),
+        pygame.Rect(534, 515, 54, 20),
+        pygame.Rect(159, 515, 20, 83),
+        pygame.Rect(222, 515, 146, 20),
+        pygame.Rect(410.5, 515, 20, 83),
+        pygame.Rect(54, 578, 189, 20),
+        pygame.Rect(285, 515, 20, 83),
+        pygame.Rect(347, 578, 189, 20),
+        pygame.Rect(0, 0, 588, 12),
+        pygame.Rect(0, 0, 12, 212),
+        pygame.Rect(576, 0, 12, 212),
+        pygame.Rect(0, 202, 117, 83),
+        pygame.Rect(471, 202, 117, 83),
+        pygame.Rect(0, 326, 117, 83),
+        pygame.Rect(471, 326, 117, 83),
+        pygame.Rect(0, 409, 12, 241),
+        pygame.Rect(0, 638, 588, 12),
+        pygame.Rect(576, 409, 12, 241),
+        pygame.Rect(221, 264, 52, 11),
+        pygame.Rect(316, 264, 52, 11),
+        pygame.Rect(221, 264, 11, 83),
+        pygame.Rect(357, 264, 11, 83),
+        pygame.Rect(221, 336, 147, 11)
     ]
     for rect in rectangles_list:
-        pygame.draw.rect(screen, (0, 255, 50), rect)
+        pygame.draw.rect(screen, (0, 255, 50), rect, -1)
     
     pygame.display.flip()
     
