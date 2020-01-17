@@ -65,9 +65,18 @@ while True:
         pygame.Rect(472, 139, 63, 20),
         pygame.Rect(159, 139, 20, 146),
         pygame.Rect(410.5, 139, 20, 146),
-        pygame.Rect(198, 250.5, 107, 27),
-        pygame.Rect(355, 173, 27, 104.5),
-        pygame.Rect(433, 250.5, 107, 27),
+        pygame.Rect(159, 202, 84, 20),
+        pygame.Rect(285, 139, 20, 84),
+        pygame.Rect(346.5, 202, 84, 20),
+        pygame.Rect(159, 326, 20, 84),
+        pygame.Rect(222, 390, 146, 20),
+        pygame.Rect(410.5, 326, 20, 84),
+        pygame.Rect(54, 454, 63, 20),
+        pygame.Rect(159, 454, 84, 20),
+        pygame.Rect(285, 390, 20, 84),
+        pygame.Rect(347, 454, 84, 20),
+        pygame.Rect(472, 454, 63, 20)
+
 
     ]
     for rect in rectangles_list:
