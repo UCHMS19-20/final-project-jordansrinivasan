@@ -1,14 +1,19 @@
-import sys
-import pygame
+import pygame, sys
+from pygame.locals import *
+
 
 pygame.init()
 screen = pygame.display.set_mode((588, 650), pygame.FULLSCREEN)
 pygame.display.flip()
 
+x_speed = 0
+y_speed = 0
+
 class Coordinates:
     def __init__ (self, x, y):
         self.x = x
         self.y = y
+
 
 pac = Coordinates(screen.get_width()//2, screen.get_height()//2)
 pressed_up = False
@@ -18,7 +23,7 @@ pressed_right = False
 while True:
     bg = pygame.image.load("src/img/pacman.png")
     screen.blit(bg, (0,0))
-    pygame.draw.circle(screen, (255, 255, 0), (pac.x, pac.y), 9, 0)    
+    pacman = pygame.draw.circle(screen, (255, 255, 0), (pac.x, pac.y), 5, 0)    
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
@@ -39,13 +44,21 @@ while True:
             elif event.key == pygame.K_RIGHT:
                 pressed_right = False
     if pressed_left:
-        pac.x -= 3
+        x_speed = -2
+        y_speed = 0
     if pressed_right:
-        pac.x += 3
+        x_speed = 2
+        y_speed = 0
+   
     if pressed_up:
-        pac.y -= 3
-    if pressed_down:
-        pac.y += 3
+        y_speed = -2
+        x_speed = 0
+    if pressed_down: 
+        y_speed = 2
+        x_speed = 0
+
+    pac.y += y_speed 
+    pac.x += x_speed
 
     if pac.x > 650:
         pac.x = 0
@@ -53,7 +66,7 @@ while True:
     elif pac.x < 0:
         pac.x = 650
         pac.y = pac.y
-    
+
     rectangles_list = [
         pygame.Rect(54, 54, 63, 44),
         pygame.Rect(159, 54, 84, 44),
@@ -64,13 +77,13 @@ while True:
         pygame.Rect(222, 139, 146, 20),
         pygame.Rect(472, 139, 63, 20),
         pygame.Rect(159, 139, 20, 146),
-        pygame.Rect(410.5, 139, 20, 146),
+        pygame.Rect(411, 139, 20, 146),
         pygame.Rect(159, 202, 84, 20),
         pygame.Rect(285, 139, 20, 83),
-        pygame.Rect(346.5, 202, 84, 20),
+        pygame.Rect(347, 202, 84, 20),
         pygame.Rect(159, 326, 20, 83),
         pygame.Rect(222, 390, 146, 20),
-        pygame.Rect(410.5, 326, 20, 83),
+        pygame.Rect(411, 326, 20, 83),
         pygame.Rect(54, 453, 63, 20),
         pygame.Rect(159, 453, 84, 20),
         pygame.Rect(285, 390, 20, 83),
@@ -82,7 +95,7 @@ while True:
         pygame.Rect(534, 515, 54, 20),
         pygame.Rect(159, 515, 20, 83),
         pygame.Rect(222, 515, 146, 20),
-        pygame.Rect(410.5, 515, 20, 83),
+        pygame.Rect(411, 515, 20, 83),
         pygame.Rect(54, 578, 189, 20),
         pygame.Rect(285, 515, 20, 83),
         pygame.Rect(347, 578, 189, 20),
@@ -102,12 +115,19 @@ while True:
         pygame.Rect(357, 264, 11, 83),
         pygame.Rect(221, 336, 147, 11)
     ]
+
     for rect in rectangles_list:
         pygame.draw.rect(screen, (0, 255, 50), rect, -1)
-    
+        if pacman.colliderect(rect):
+            if x_speed != 0:
+                x_speed = -x_speed
+            elif y_speed != 0:
+                y_speed = -y_speed
+
     pygame.display.flip()
+    
     
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_ESCAPE:
             sys.exit()
-    
+            
