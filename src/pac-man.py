@@ -23,7 +23,7 @@ pressed_right = False
 while True:
     bg = pygame.image.load("src/img/pacman.png")
     screen.blit(bg, (0,0))
-    pacman = pygame.draw.circle(screen, (255, 255, 0), (pac.x, pac.y), 5, 0)    
+    pacman = pygame.draw.circle(screen, (255, 255, 0), (pac.x, pac.y), 6, 0)    
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
@@ -123,8 +123,21 @@ while True:
                 x_speed = -x_speed
             elif y_speed != 0:
                 y_speed = -y_speed
+      
+    food_pos_x = 33
+    food_pos_y = 33
+    food_pos = (food_pos_x, food_pos_y) 
+    
+
+    food = pygame.draw.rect(screen, (255, 255, 255), (33, 33, 4, 4))
+    for i in range (1, 30):
+        new_food_pos_x = food_pos_x + (18 * i)
+        new_food = ((pygame.draw.rect(screen, (255, 255, 255), (new_food_pos_x, food_pos_y, 4, 4))))
+        if pacman.colliderect(new_food):
+            new_food.remove(new_food) 
 
     pygame.display.flip()
+    
     
     
     if event.type == pygame.KEYDOWN:
