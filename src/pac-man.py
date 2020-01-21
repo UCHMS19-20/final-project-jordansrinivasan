@@ -14,6 +14,10 @@ class Coordinates:
         self.x = x
         self.y = y
 
+free_to_move_left = False
+free_to_move_right = False
+free_to_move_up = False
+free_to_move_down = False
 
 pac = Coordinates(screen.get_width()//2, screen.get_height()//2)
 pressed_up = False
@@ -28,21 +32,29 @@ while True:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
                 pressed_up = True
+                free_to_move_up = True            
             elif event.key == pygame.K_DOWN:
                 pressed_down = True
+                free_to_move_down = True
             elif event.key == pygame.K_LEFT:
                 pressed_left = True
+                free_to_move_left = True
             elif event.key == pygame.K_RIGHT:
                pressed_right = True
+               free_to_move_right = True
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_UP:
                 pressed_up = False
+                free_to_move_up = True
             elif event.key == pygame.K_DOWN:
                 pressed_down = False
+                free_to_move_down = True
             elif event.key == pygame.K_LEFT:
                 pressed_left = False
+                free_to_move_left = True
             elif event.key == pygame.K_RIGHT:
                 pressed_right = False
+                free_to_move_right = True
     if pressed_left:
         x_speed = -2
         y_speed = 0
@@ -57,8 +69,6 @@ while True:
         y_speed = 2
         x_speed = 0
 
-    pac.y += y_speed 
-    pac.x += x_speed
 
     if pac.x > 650:
         pac.x = 0
@@ -115,30 +125,38 @@ while True:
         pygame.Rect(357, 264, 11, 83),
         pygame.Rect(221, 336, 147, 11)
     ]
-
+    
     for rect in rectangles_list:
         pygame.draw.rect(screen, (0, 255, 50), rect, -1)
         if pacman.colliderect(rect):
-            if x_speed != 0:
-                x_speed = -x_speed
-            elif y_speed != 0:
-                y_speed = -y_speed
-      
+            if y_speed <= 0:
+                free_to_move_up = False
+            elif y_speed >= 0:
+                free_to_move_down = False
+            elif x_speed <= 0:
+                free_to_move_left = False
+            elif x_speed >= 0:
+                free_to_move_right = False
+    if free_to_move_left:
+        pac.x += x_speed 
+    elif free_to_move_right:
+        pac.x -= x_speed
+    elif free_to_move_up:
+        pac.y -= y_speed
+    elif free_to_move_down:
+        pac.y += y_speed
+
     food_pos_x = 33
-    food_pos_y = 33
-    food_pos = (food_pos_x, food_pos_y) 
+    food_pos_y = 33 
+    food = pygame.draw.rect(screen, (255, 255, 255), (food_pos_x, food_pos_y, 6, 6))
+    for i in range (1, 20):
+        new_food_pos_x = food_pos_x + (27 * i)
+        new_food = pygame.draw.rect(screen, (255, 255, 255), (new_food_pos_x, food_pos_y, 6, 6))
+    for i in range (1, 20):
+        new_food_pos_y = food_pos_y + (31 * i)
+        new_food = pygame.draw.rect(screen, (255, 255, 255), (new_food_pos_x, new_food_pos_y, 6, 6))
     
-
-    food = pygame.draw.rect(screen, (255, 255, 255), (33, 33, 4, 4))
-    for i in range (1, 30):
-        new_food_pos_x = food_pos_x + (18 * i)
-        new_food = ((pygame.draw.rect(screen, (255, 255, 255), (new_food_pos_x, food_pos_y, 4, 4))))
-        if pacman.colliderect(new_food):
-            new_food.remove(new_food) 
-
     pygame.display.flip()
-    
-    
     
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_ESCAPE:
