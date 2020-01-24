@@ -8,14 +8,19 @@ from pacman import *
 from ghosts import *
 from walls import * 
 
-Surface = pygame.display.set_mode((588, 650), 0, 32)
+Surface = pygame.display.set_mode((588, 650), pygame.FULLSCREEN)
 pygame.display.set_caption("Pacman")
 
 import random, copy
 
 background = pygame.image.load("src/img/pacman.png").convert()
 pacman = Pacman()
-ghosts = [Ghost()]
+ghosts = [
+    Ghost((0, 255, 255), 241, 284)
+    Ghost((255, 0, 0), 348, 284)
+    Ghost((255, 192, 203), 241, 327)
+    Ghost((255, 165, 0), 348, 327)
+]
 walls = Walls.createList(Walls())
 pellets_normal = Pellets.createListNormal (Pellets())
 pellets_special = Pellets.createListSpecial (Pellets())
@@ -26,7 +31,7 @@ myFont = pygame.font.SysFont('Arial', 30)
 
 Surface.fill((0, 0, 0))
 text = myFont.render('Welcome to Pacman! Click anywhere to play', False, (255, 255, 255))
-screen.blit(text, (40, 40))
+Surface.blit(text, (40, 40))
 pygame.display.update()
 
 keepGoing_game = True
@@ -35,34 +40,34 @@ while keepGoing_game:
     # Round loop
     keepGoing_round = True
     while keepGoing_round:
-        clock.tick(FPS)
+        clock.tick(60)
 
         # Event handling
         for event in pygame.event.get():
             # Quitting
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 keepGoing_game = keepGoing_round = False
             # Arrow key down
-            elif event.type == KEYDOWN:
-                if event.key == K_UP:
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
                     pacman.moveUp = True
                     pacman.moveLeft = pacman.moveDown = pacman.moveRight = False
                     pacman.direction = 0
-                elif event.key == K_LEFT:
+                elif event.key == pygame.K_LEFT:
                     pacman.moveLeft = True
                     pacman.moveUp = pacman.moveDown = pacman.moveRight = False
                     pacman.direction = 1
-                elif event.key == K_DOWN:
+                elif event.key == pygame.K_DOWN:
                     pacman.moveDown = True
                     pacman.moveUp = pacman.moveLeft = pacman.moveRight = False
                     pacman.direction = 2
-                elif event.key == K_RIGHT:
+                elif event.key == pygame.K_RIGHT:
                     pacman.moveRight = True
                     pacman.moveUp = pacman.moveLeft = pacman.moveDown = False
                     pacman.direction = 3
 
             # Arrow key up
-            elif event.type == KEYUP:
+            elif event.type == pygame.KEYUP:
                 pacman.moveUp = pacman.moveLeft = pacman.moveDown = pacman.moveRight = False
 
         # Move pacman rectangle
@@ -89,7 +94,7 @@ while keepGoing_game:
             Surface.fill((0, 0, 0))
             Surface.blit(background, (0, 0))
             Surface.blit(pacman.getScoreSurface(), (10, 10))
-            Surface.blit(pacman.getLivesSurface(), (WINDOWSIZE[0] - 200, 10))
+            Surface.blit(pacman.getLivesSurface(), (388, 10))
         for p in pellets_small:
             Surface.blit(p_rect, (p[0], p[1]))
         for p in pellets_large: 
