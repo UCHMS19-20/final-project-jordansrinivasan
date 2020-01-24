@@ -2,52 +2,34 @@ import pygame
 import copy
 
 from character import *
-from main import *
 
-class Ghost (Character):
+Surface = pygame.display.set_mode((588, 650), pygame.FULLSCREEN)
 
-    def __init__ (self):
+class Ghost(Character):
+
+    def __init__ (self, color, rect_left, rect_top):
         self.color = color
-        self.rect = self.surface.get_rect ()
-        self.rect.left = rect.left
-        self.rect.top = rect.left
-        self.surface = pygame.draw.circle (Surface, self.color, (self.rect.left, self.rect.top))
+        self.rect = self.surface.get_rect()
+        self.rect_left = rect_left
+        self.rect_top = rect_top
+        self.surface = pygame.draw.circle (Surface, self.color, (self.rect_left, self.rect_top))
         self.speed = 1
         self.course = [0] * (50 / self.speed)
 
-        Inky = Ghost()
-        Blinky = Ghost()
-        Pinky = Ghost()
-        Clyde = Ghost()
+    ghosts = [
+        Ghost((0, 255, 255), 241, 284)
+        Ghost((255, 0, 0), 348, 284)
+        Ghost((255, 192, 203), 241, 327)
+        Ghost((255, 165, 0), 348, 327)
+       ]
 
-        Inky.color = (0, 255, 255)
-        Inky.rect.left = 241
-        Inky.rect.top = 284
-        Blinky.color = (255, 0, 0)
-        Blinky.rect.left = 348
-        Blinky.rect.top = 284
-        Pinky.color = (255, 192, 203)
-        Pinky.rect.left = 241
-        Pinky.rect.top = 327
-        Clyde.color = (255, 165, 0)
-        Clyde.rect.left = 348
-        Clyde.rect.top = 327
 
     # resets ghost's position
     def reset (self):
-        self.rect.left = 315
-        self.rect.top = 275
+        self.rect_left = 315
+        self.rect_top = 275
         self.course = [0] * (50 / self.speed)
 
-    # adds ghosts if need be
-    def add (self, ghosts):
-        Ghost.add_time -= 1
-        if len (ghosts) == 0:
-            if Ghost.add_time > int (Ghost.ADD_TIME / 10.0):
-                Ghost.add_time = int (Ghost.ADD_TIME / 10.0)
-        if Ghost.add_time <= 0:
-            ghosts.append (Ghost ())
-            Ghost.add_time = Ghost.ADD_TIME
 
     # determines how far ghost can move before colliding with wall
     def canMove_distance (self, direction, walls):
@@ -69,8 +51,8 @@ class Ghost (Character):
             else:
                 self.course = []
         else:
-            xDistance = pacman.rect.left - self.rect.left
-            yDistance = pacman.rect.top - self.rect.top
+            xDistance = pacman.rect.left - self.rect_left
+            yDistance = pacman.rect.top - self.rect_top
             choices = [-1, -1, -1, -1]
 
             # Checks to see which directions to move in order to be closer to Pacman, as well as the order of these directions.
@@ -124,6 +106,5 @@ class Ghost (Character):
             if len (choices) > 0:
                 Character.move (self, choices [0])
                 if choices_original.index (choices [0]) >= 2:       # if move is 3rd or 4th choice
-                    global FPS
-                    for i in range (int (FPS * 1.5)):
+                    for i in range (int (90)):
                         self.course.append (choices [0])
