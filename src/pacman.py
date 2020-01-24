@@ -20,11 +20,11 @@ class Pacman (Character):
     def reset (self):
         self.radius = 6 
         self.color = (255, 255, 0) 
-        self.rect = rect
         self.x = 303
         self.y = 616
         self.moveUp = self.moveDown = self.moveLeft = self.moveRight = False
         self.surface = pygame.draw.circle(Surface, self.color, (self.x, self.y), self.radius)
+        self.rect = self.surface.get_rect()
         self.direction = 0
 
     def move (self, walls):
