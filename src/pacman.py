@@ -1,6 +1,8 @@
 import pygame, sys
 from character import *
 
+Surface = pygame.display.set_mode((588, 650), pygame.FULLSCREEN)
+
 class Pacman (Character):
     def __init__(self):
         self.radius = 6
@@ -9,20 +11,20 @@ class Pacman (Character):
         self.moveUp = self.moveDown = self.moveLeft = self.moveRight = False
         self.score = 0
         self.lives = 3
-        self.rect = pygame.Surface.get_rect()
-        self.rect.left = 303
-        self.rect.top = 616
-        self.surface = pygame.draw.circle(Surface, self.color, (self.rect.left, self.rect.top), self.radius)
+        self.x = 303
+        self.y = 616
+        self.surface = pygame.draw.circle(Surface, self.color, (self.x, self.y), self.radius)
+        self.rect = self.surface.get_rect()
         self.direction = 0
 
     def reset (self):
-        self.radius = 6
-        self.color = YELLOW 
-        self.rect = pygame.Surface.get_rect()
-        self.rect.left = 303
-        self.rect.top = 616
+        self.radius = 6 
+        self.color = (255, 255, 0) 
+        self.rect = rect
+        self.x = 303
+        self.y = 616
         self.moveUp = self.moveDown = self.moveLeft = self.moveRight = False
-        self.surface = pygame.draw.circle(Surface, self.color, (self.rect.left, self.rect.top), self.radius)
+        self.surface = pygame.draw.circle(Surface, self.color, (self.x, self.y), self.radius)
         self.direction = 0
 
     def move (self, walls):
@@ -42,22 +44,18 @@ class Pacman (Character):
             self.rect.left = 0
 
     def getScoreSurface (self):
-        global YELLOW
-        return pygame.font.SysFont (None, 48). render ("Score: " + str (self.score), True, YELLOW)
+        return pygame.font.SysFont (None, 48). render ("Score: " + str (self.score), True, self.color)
 
     def getLivesSurface (self):
-        global YELLOW
-        surface = pygame.font.SysFont (None, 48). render ("Lives: ", True, YELLOW)
+        surface = pygame.font.SysFont (None, 48). render ("Lives: ", True, self.color)
         x = 110
         for i in range (self.lives):
-            pygame.draw.circle(Pacman.surface, Pacman.color, (x, 10))
+            pygame.draw.circle(self.surface, self.color, (x, 10))
             x += 25
         return surface
 
     def getWinningSurface (self):
-        global YELLOW
-        return pygame.font.SysFont (None, 72). render ("You Win!", True, YELLOW)
+        return pygame.font.SysFont (None, 72). render ("You Win!", True, self.color)
 
     def getLosingSurface (self):
-        global YELLOW
-        return pygame.font.SysFont (None, 72). render ("You Lose...", True, YELLOW)
+        return pygame.font.SysFont (None, 72). render ("You Lose...", True, self.color)
