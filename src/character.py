@@ -21,12 +21,12 @@ class Character (object):
     
     def move (self, direction):
         if direction == 0:
-            self.y -= self.speed
-        elif direction == 1:
             self.x -= self.speed
+        elif direction == 1:
+            self.y -= self.speed
         elif direction == 2:
-            self.y += self.speed
-        elif direction == 3:
             self.x += self.speed
+        elif direction == 3:
+            self.y += self.speed
 
 
