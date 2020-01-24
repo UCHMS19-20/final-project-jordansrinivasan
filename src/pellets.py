@@ -1,5 +1,6 @@
 import pygame
-from main import *
+
+Surface = pygame.display.set_mode((588, 650), pygame.FULLSCREEN)
 
 class Pellets (object):
 
