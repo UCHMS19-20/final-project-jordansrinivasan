@@ -5,7 +5,7 @@ pygame.init()
 from pellets import *
 from character import * 
 from pacman import *
-from ghosts import *
+from ghosts import Ghost
 from walls import * 
 
 Surface = pygame.display.set_mode((588, 650), pygame.FULLSCREEN)
@@ -16,9 +16,9 @@ import random, copy
 background = pygame.image.load("src/img/pacman.png").convert()
 pacman = Pacman()
 ghosts = [
-    Ghost((0, 255, 255), 241, 284)
-    Ghost((255, 0, 0), 348, 284)
-    Ghost((255, 192, 203), 241, 327)
+    Ghost((0, 255, 255), 241, 284),
+    Ghost((255, 0, 0), 348, 284),
+    Ghost((255, 192, 203), 241, 327),
     Ghost((255, 165, 0), 348, 327)
 ]
 walls = Walls.createList(Walls())
@@ -80,10 +80,7 @@ while keepGoing_game:
         pacman.getSurface()
 
         # Check if pacman has eaten any pellets and delete them
-        Pellets.check (Pellets (), pellets_normal, pellets_special, pacman, ghosts)
-
-        # Add a new ghost if necessary
-        Ghost.add (Ghost (), ghosts)
+        Pellets.check (Pellets (), pellets_normal, pellets_special, pacman)
 
         # Move ghosts
         for g in ghosts:
@@ -95,9 +92,11 @@ while keepGoing_game:
             Surface.blit(background, (0, 0))
             Surface.blit(pacman.getScoreSurface(), (10, 10))
             Surface.blit(pacman.getLivesSurface(), (388, 10))
-        for p in pellets_small:
+        for p in pellets_normal:
+            p_rect = pygame.draw.rect(Surface, (255, 255, 255), p)
             Surface.blit(p_rect, (p[0], p[1]))
-        for p in pellets_large: 
+        for p in pellets_special: 
+            p_rect = pygame.draw.rect(Surface, (255, 255, 255), p)
             Surface.blit(p_rect, (p[0], p[1]))
         for g in ghosts:
             Surface.blit(g.surface, g.rect)
