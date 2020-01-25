@@ -3,9 +3,9 @@ from pygame.locals import *
 pygame.init()
 
 from pellets import *
-from character import * 
-from pacman import *
-from ghosts import Ghost
+from character import Character 
+from pacman import Pacman
+from ghosts import *
 from walls import * 
 
 Surface = pygame.display.set_mode((588, 650), pygame.FULLSCREEN)
@@ -15,12 +15,8 @@ import random, copy
 
 background = pygame.image.load("src/img/pacman.png").convert()
 pacman = Pacman()
-ghosts = [
-    Ghost((0, 255, 255), 241, 284),
-    Ghost((255, 0, 0), 348, 284),
-    Ghost((255, 192, 203), 241, 327),
-    Ghost((255, 165, 0), 348, 327)
-]
+ghosts = [Ghost()]
+
 walls = Walls.createList(Walls())
 pellets_normal = Pellets.createListNormal (Pellets())
 pellets_special = Pellets.createListSpecial (Pellets())
@@ -76,9 +72,6 @@ while keepGoing_game:
         # Check if pacman must teleport to the other side
         pacman.teleport()
 
-        # Animate and rotate pacman sprite
-        pacman.getSurface()
-
         # Check if pacman has eaten any pellets and delete them
         Pellets.check (Pellets (), pellets_normal, pellets_special, pacman)
 
@@ -92,6 +85,7 @@ while keepGoing_game:
             Surface.blit(background, (0, 0))
             Surface.blit(pacman.getScoreSurface(), (10, 10))
             Surface.blit(pacman.getLivesSurface(), (388, 10))
+
         for p in pellets_normal:
             p_rect = pygame.draw.rect(Surface, (255, 255, 255), p)
             Surface.blit(p_rect, (p[0], p[1]))
@@ -104,7 +98,7 @@ while keepGoing_game:
             pygame.display.update()
 
                 # Check if pacman collided with a ghost
-        for g in ghosts [:]:
+        for g in ghosts:
             if pacman.rect.colliderect (g.rect): 
                 keepGoing_round = False
                 pacman.lives -= 1
