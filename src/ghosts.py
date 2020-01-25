@@ -1,34 +1,37 @@
 import pygame
 import copy
-
 from character import *
 
 Surface = pygame.display.set_mode((588, 650), pygame.FULLSCREEN)
 
 class Ghost(Character):
 
-    def __init__ (self, color, rect_left, rect_top):
-        self.color = color
+    TIME = 1800
+    time = TIME
+
+    def __init__ (self):
+        self.color = (255, 255, 0)
         self.rect = self.surface.get_rect()
-        self.rect_left = rect_left
-        self.rect_top = rect_top
+        self.rect_left = 241
+        self.rect_top = 221
         self.surface = pygame.draw.circle (Surface, self.color, (self.rect_left, self.rect_top))
-        self.speed = 1
+        self.speed = 2
         self.course = [0] * (50 / self.speed)
 
-    ghosts = [
-        Ghost((0, 255, 255), 241, 284)
-        Ghost((255, 0, 0), 348, 284)
-        Ghost((255, 192, 203), 241, 327)
-        Ghost((255, 165, 0), 348, 327)
-       ]
-
-
     # resets ghost's position
-    def reset (self):
+    def reset(self):
         self.rect_left = 315
         self.rect_top = 275
         self.course = [0] * (50 / self.speed)
+
+    def add(self, ghosts):
+        Ghost.time -= 1
+        if len(ghosts) == 0:
+            if Ghost.time > (Ghost.TIME / 10.0):
+                Ghost.time = (Ghost.TIME / 10.0)
+            if Ghost.time <= 0:
+                ghosts.append(Ghost())
+                Ghost.time = Ghost.TIME
 
 
     # determines how far ghost can move before colliding with wall
