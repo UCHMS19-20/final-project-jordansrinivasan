@@ -3,16 +3,18 @@ class Character (object):
         self.surface = None
         self.rect = None
         self.speed = None
+        self.x = None
+        self.y = None
 
     def canMove (self, direction, walls):
         if direction == 0:
-            rectTest = self.rect.move((0, -self.speed))
+            rectTest = self.rect.move(0, (self.speed * -1))
         elif direction == 1:
-            rectTest = self.rect.move((-self.speed, 0))
+            rectTest = self.rect.move((self.speed * -1), 0)
         elif direction == 2:
-            rectTest = self.rect.move((0, self.speed))
+            rectTest = self.rect.move(0, self.speed)
         elif direction == 3:
-            rectTest = self.rect.move((self.speed, 0))
+            rectTest = self.rect.move(self.speed, 0)
 
         for wall in walls:
             if wall.colliderect(rectTest):
@@ -21,12 +23,12 @@ class Character (object):
     
     def move (self, direction):
         if direction == 0:
-            self.x -= self.speed
-        elif direction == 1:
             self.y -= self.speed
+        elif direction == 1:
+            self.x -= self.speed
         elif direction == 2:
-            self.x += self.speed
-        elif direction == 3:
             self.y += self.speed
+        elif direction == 3:
+            self.x += self.speed
 
 
