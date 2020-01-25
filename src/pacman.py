@@ -14,7 +14,6 @@ class Pacman (Character):
         self.x = 303
         self.y = 616
         self.surface = pygame.draw.circle(Surface, self.color, (self.x, self.y), self.radius)
-        self.rect = self.surface.get_rect()
         self.direction = 0
 
     def reset (self):
@@ -38,10 +37,10 @@ class Pacman (Character):
             Character.move (self, 3)
 
     def teleport (self):
-        if self.rect.left <= 0:
-            self.rect.left = 588
-        elif self.rect.left >= 588:
-            self.rect.left = 0
+        if self.x <= 0:
+            self.x = 588
+        elif self.x >= 588:
+            self.x = 0
 
     def getScoreSurface (self):
         return pygame.font.SysFont (None, 48). render ("Score: " + str (self.score), True, self.color)
