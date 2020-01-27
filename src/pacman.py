@@ -1,60 +1,150 @@
 import pygame, sys
-from character import *
+from pygame.locals import *
+import copy
 
-Surface = pygame.display.set_mode((588, 650), pygame.FULLSCREEN)
+pygame.init()
+pygame.font.init()
+screen = pygame.display.set_mode((588, 650), pygame.FULLSCREEN)
+pygame.display.flip()
 
-class Pacman (Character):
-    def __init__(self):
-        self.radius = 6
-        self.color = (255, 255, 0)
-        self.speed = 2
-        self.moveUp = self.moveDown = self.moveLeft = self.moveRight = False
-        self.score = 0
-        self.lives = 3
-        self.x = 303
-        self.y = 616
-        self.surface = pygame.draw.circle(Surface, self.color, (self.x, self.y), self.radius)
-        self.direction = 0
+ghosts = []
+x_speed = 0
+y_speed = 0
+score = 0
 
-    def reset (self):
-        self.radius = 6 
-        self.color = (255, 255, 0) 
-        self.x = 303
-        self.y = 616
-        self.moveUp = self.moveDown = self.moveLeft = self.moveRight = False
-        self.surface = pygame.draw.circle(Surface, self.color, (self.x, self.y), self.radius)
-        self.rect = self.surface.get_rect()
-        self.direction = 0
+class Coordinates:
+    def __init__ (self, x, y):
+        self.x = x
+        self.y = y
 
-    def move (self, walls):
-        if self.moveUp and self.canMove (0, walls):
-            Character.move(self, 0)
-        elif self.moveLeft and self.canMove (1, walls):
-            Character.move (self, 1)
-        elif self.moveDown and self.canMove (2, walls):
-            Character.move (self, 2)
-        elif self.moveDown and self.canMove (3, walls):
-            Character.move (self, 3)
+pac = Coordinates(screen.get_width()//2, screen.get_height()//2)
+pressed_up = False
+pressed_down = False
+pressed_left = False
+pressed_right = False
 
-    def teleport (self):
-        if self.x <= 0:
-            self.x = 588
-        elif self.x >= 588:
-            self.x = 0
+while True:
+    bg = pygame.image.load("img/pacman.png")
+    screen.blit(bg, (0,0))
+    pacman = pygame.draw.circle(screen, (255, 255, 0), (pac.x, pac.y), 6, 0)    
+    for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                pressed_up = True           
+            elif event.key == pygame.K_DOWN:
+                pressed_down = True
+            elif event.key == pygame.K_LEFT:
+                pressed_left = True
+            elif event.key == pygame.K_RIGHT:
+               pressed_right = True
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_UP:
+                pressed_up = False
+            elif event.key == pygame.K_DOWN:
+                pressed_down = False
+            elif event.key == pygame.K_LEFT:
+                pressed_left = False
+            elif event.key == pygame.K_RIGHT:
+                pressed_right = False
 
-    def getScoreSurface (self):
-        return pygame.font.SysFont (None, 48). render ("Score: " + str (self.score), True, self.color)
+    if pressed_left:
+        x_speed = -2
+        y_speed = 0
+    if pressed_right:
+        x_speed = 2
+        y_speed = 0
+   
+    if pressed_up:
+        y_speed = -2
+        x_speed = 0
+    if pressed_down: 
+        y_speed = 2
+    
+        x_speed = 0
 
-    def getLivesSurface (self):
-        surface = pygame.font.SysFont (None, 48). render ("Lives: ", True, self.color)
-        x = 110
-        for i in range (self.lives):
-            pygame.draw.circle(self.surface, self.color, (x, 10))
-            x += 25
-        return surface
+    pac.x += x_speed
+    pac.y += y_speed
 
-    def getWinningSurface (self):
-        return pygame.font.SysFont (None, 72). render ("You Win!", True, self.color)
+    if pac.x > 650:
+        pac.x = 0
+        pac.y = pac.y
+    elif pac.x < 0:
+        pac.x = 650
+        pac.y = pac.y
 
-    def getLosingSurface (self):
-        return pygame.font.SysFont (None, 72). render ("You Lose...", True, self.color)
+    walls = [
+        pygame.Rect(54, 54, 63, 44),
+        pygame.Rect(159, 54, 84, 44),
+        pygame.Rect(159, 54, 83, 44),
+        pygame.Rect(285, 0, 20, 98),
+        pygame.Rect(347, 54, 84, 44),
+        pygame.Rect(347, 54, 83, 44),
+        pygame.Rect(472, 54, 63, 44),
+        pygame.Rect(54, 139, 63, 20),
+        pygame.Rect(222, 139, 146, 20),
+        pygame.Rect(472, 139, 63, 20),
+        pygame.Rect(159, 139, 20, 146),
+        pygame.Rect(411, 139, 20, 146),
+        pygame.Rect(159, 202, 84, 20),
+        pygame.Rect(159, 202, 83, 20),
+        pygame.Rect(285, 139, 20, 83),
+        pygame.Rect(347, 202, 84, 20),
+        pygame.Rect(347, 202, 83, 20),
+        pygame.Rect(159, 326, 20, 83),
+        pygame.Rect(222, 390, 146, 20),
+        pygame.Rect(411, 326, 20, 83),
+        pygame.Rect(54, 453, 63, 20),
+        pygame.Rect(159, 453, 84, 20),
+        pygame.Rect(54, 452, 63, 20),
+        pygame.Rect(159, 452, 83, 20),
+        pygame.Rect(285, 390, 20, 83),
+        pygame.Rect(347, 453, 84, 20),
+        pygame.Rect(472, 453, 63, 20),
+        pygame.Rect(347, 452, 83, 20),
+        pygame.Rect(472, 452, 63, 20),
+        pygame.Rect(0, 515, 54, 20),
+        pygame.Rect(97, 453, 20, 83),
+        pygame.Rect(472, 453, 20, 83),
+        pygame.Rect(97, 452, 20, 84),
+        pygame.Rect(472, 452, 20, 84),
+        pygame.Rect(534, 515, 54, 20),
+        pygame.Rect(159, 515, 20, 83),
+        pygame.Rect(222, 515, 146, 20),
+        pygame.Rect(411, 515, 20, 83),
+        pygame.Rect(54, 578, 189, 20),
+        pygame.Rect(285, 515, 20, 83),
+        pygame.Rect(347, 578, 189, 20),
+        pygame.Rect(0, 0, 588, 12),
+        pygame.Rect(0, 0, 12, 212),
+        pygame.Rect(576, 0, 12, 212),
+        pygame.Rect(0, 202, 117, 83),
+        pygame.Rect(471, 202, 117, 83),
+        pygame.Rect(0, 326, 117, 83),
+        pygame.Rect(471, 326, 117, 83),
+        pygame.Rect(0, 409, 12, 241),
+        pygame.Rect(0, 638, 588, 12),
+        pygame.Rect(576, 409, 12, 241),
+        pygame.Rect(221, 264, 52, 11),
+        pygame.Rect(316, 264, 52, 11),
+        pygame.Rect(221, 264, 11, 83),
+        pygame.Rect(357, 264, 11, 83),
+        pygame.Rect(221, 336, 147, 11)
+    ]
+    for rect in walls:
+        pygame.draw.rect(screen, (0, 255, 50), rect, -1)
+        if pacman.colliderect(rect):
+            if x_speed != 0:
+                x_speed = -x_speed
+            if y_speed != 0:
+                y_speed = -y_speed
+    pygame.display.flip()
+
+    pygame.draw.circle(screen, (255, 0, 0), (33, 33), 6)
+    pygame.draw.circle(screen, (255, 0, 0), (555, 33), 6)
+    pygame.draw.circle(screen, (255, 0, 0), (33, 629), 6)
+    pygame.draw.circle(screen, (255, 0, 0), (555, 629), 6)
+    pygame.display.flip()
+
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_ESCAPE:
+            sys.exit()
