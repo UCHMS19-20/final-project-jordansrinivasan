@@ -7,10 +7,21 @@ pygame.font.init()
 screen = pygame.display.set_mode((588, 650), pygame.FULLSCREEN)
 pygame.display.flip()
 
-ghosts = []
 x_speed = 0
 y_speed = 0
-score = 0
+
+
+
+ghost_1_x = 33
+ghost_1_y = 33
+ghost_2_x = 555
+ghost_2_y = 33
+ghost_3_x = 33
+ghost_3_y = 617
+ghost_4_x = 555
+ghost_4_y = 617
+
+size = 20
 
 class Coordinates:
     def __init__ (self, x, y):
@@ -24,9 +35,25 @@ pressed_left = False
 pressed_right = False
 
 while True:
-    bg = pygame.image.load("img/pacman.png")
-    screen.blit(bg, (0,0))
-    pacman = pygame.draw.circle(screen, (255, 255, 0), (pac.x, pac.y), 6, 0)    
+    ghost_1 = pygame.image.load("img/ghost1.png")
+    ghost_2 = pygame.image.load("img/ghost2.png")
+    ghost_3 = pygame.image.load("img/ghost3.jpg")
+    ghost_4 = pygame.image.load("img/ghost4.png")
+
+    ghost_1 = pygame.transform.scale(ghost_1, (size, size))
+    ghost_2 = pygame.transform.scale(ghost_2, (size, size))
+    ghost_3 = pygame.transform.scale(ghost_3, (size, size))
+    ghost_4 = pygame.transform.scale(ghost_4, (size, size))
+
+    bg = pygame.image.load("img/background.png")
+    screen.blit(bg, (0,0))  
+
+    screen.blit(ghost_1, (ghost_1_x, ghost_1_y))
+    screen.blit(ghost_2, (ghost_2_x, ghost_2_y))
+    screen.blit(ghost_3, (ghost_3_x, ghost_3_y))
+    screen.blit(ghost_4, (ghost_4_x, ghost_4_y))
+
+    pacman = pygame.draw.circle(screen, (255, 255, 0), (pac.x, pac.y), 6)
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
@@ -59,7 +86,6 @@ while True:
         x_speed = 0
     if pressed_down: 
         y_speed = 2
-    
         x_speed = 0
 
     pac.x += x_speed
@@ -74,10 +100,8 @@ while True:
 
     walls = [
         pygame.Rect(54, 54, 63, 44),
-        pygame.Rect(159, 54, 84, 44),
         pygame.Rect(159, 54, 83, 44),
         pygame.Rect(285, 0, 20, 98),
-        pygame.Rect(347, 54, 84, 44),
         pygame.Rect(347, 54, 83, 44),
         pygame.Rect(472, 54, 63, 44),
         pygame.Rect(54, 139, 63, 20),
@@ -85,28 +109,20 @@ while True:
         pygame.Rect(472, 139, 63, 20),
         pygame.Rect(159, 139, 20, 146),
         pygame.Rect(411, 139, 20, 146),
-        pygame.Rect(159, 202, 84, 20),
         pygame.Rect(159, 202, 83, 20),
         pygame.Rect(285, 139, 20, 83),
-        pygame.Rect(347, 202, 84, 20),
         pygame.Rect(347, 202, 83, 20),
         pygame.Rect(159, 326, 20, 83),
         pygame.Rect(222, 390, 146, 20),
         pygame.Rect(411, 326, 20, 83),
-        pygame.Rect(54, 453, 63, 20),
-        pygame.Rect(159, 453, 84, 20),
         pygame.Rect(54, 452, 63, 20),
         pygame.Rect(159, 452, 83, 20),
         pygame.Rect(285, 390, 20, 83),
-        pygame.Rect(347, 453, 84, 20),
-        pygame.Rect(472, 453, 63, 20),
         pygame.Rect(347, 452, 83, 20),
         pygame.Rect(472, 452, 63, 20),
         pygame.Rect(0, 515, 54, 20),
         pygame.Rect(97, 453, 20, 83),
         pygame.Rect(472, 453, 20, 83),
-        pygame.Rect(97, 452, 20, 84),
-        pygame.Rect(472, 452, 20, 84),
         pygame.Rect(534, 515, 54, 20),
         pygame.Rect(159, 515, 20, 83),
         pygame.Rect(222, 515, 146, 20),
@@ -139,11 +155,50 @@ while True:
                 y_speed = -y_speed
     pygame.display.flip()
 
-    pygame.draw.circle(screen, (255, 0, 0), (33, 33), 6)
-    pygame.draw.circle(screen, (255, 0, 0), (555, 33), 6)
-    pygame.draw.circle(screen, (255, 0, 0), (33, 629), 6)
-    pygame.draw.circle(screen, (255, 0, 0), (555, 629), 6)
-    pygame.display.flip()
+    if ghost_1_x <= pac.x:
+        ghost_1_x += 1
+    if ghost_1_x >= pac.x:
+        ghost_1_x -= 1
+    if ghost_1_y <= pac.y:
+        ghost_1_y += 1
+    if ghost_1_y >= pac.y:
+        ghost_1_y -= 1
+
+    if ghost_2_x <= pac.x:
+        ghost_2_x += 1
+    if ghost_2_x >= pac.x:
+        ghost_2_x -= 1
+    if ghost_2_y <= pac.y:
+        ghost_2_y += 1
+    if ghost_2_y >= pac.y:
+        ghost_2_y -= 1
+
+    if ghost_3_x <= pac.x:
+        ghost_3_x += 1
+    if ghost_3_x >= pac.x:
+        ghost_3_x -= 1
+    if ghost_3_y <= pac.y:
+        ghost_3_y += 1
+    if ghost_3_y >= pac.y:
+        ghost_3_y -= 1
+
+    if ghost_4_x <= pac.x:
+        ghost_4_x += 1
+    if ghost_4_x >= pac.x:
+        ghost_4_x -= 1
+    if ghost_4_y <= pac.y:
+        ghost_4_y += 1
+    if ghost_4_y >= pac.y:
+        ghost_4_y -= 1
+
+    if pac.x <= ghost_1_x and pac.x >= ghost_1_x and pac.y <= ghost_1_y and pac.y >= ghost_1_y:
+        sys.exit()
+    if pac.x <= ghost_2_x and pac.x >= ghost_2_x and pac.y <= ghost_2_y and pac.y >= ghost_2_y:
+        sys.exit()
+    if pac.x <= ghost_3_x and pac.x >= ghost_3_x and pac.y <= ghost_3_y and pac.y >= ghost_3_y:
+        sys.exit()  
+    if pac.x <= ghost_4_x and pac.x >= ghost_4_x and pac.y <= ghost_4_y and pac.y >= ghost_4_y:
+        sys.exit()
 
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_ESCAPE:
