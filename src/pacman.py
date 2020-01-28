@@ -11,7 +11,7 @@ x_speed = 0
 y_speed = 0
 
 
-
+# gives initial codinates of ghosts
 ghost_1_x = 33
 ghost_1_y = 33
 ghost_2_x = 555
@@ -23,6 +23,7 @@ ghost_4_y = 617
 
 size = 20
 
+# Class coordinates for pacman
 class Coordinates:
     def __init__ (self, x, y):
         self.x = x
@@ -34,27 +35,33 @@ pressed_down = False
 pressed_left = False
 pressed_right = False
 
+# Creates infinite loop while pygame is running
 while True:
     ghost_1 = pygame.image.load("img/ghost1.png")
     ghost_2 = pygame.image.load("img/ghost2.png")
     ghost_3 = pygame.image.load("img/ghost3.jpg")
     ghost_4 = pygame.image.load("img/ghost4.png")
-
+    
+    # Makes ghost images smaller
     ghost_1 = pygame.transform.scale(ghost_1, (size, size))
     ghost_2 = pygame.transform.scale(ghost_2, (size, size))
     ghost_3 = pygame.transform.scale(ghost_3, (size, size))
     ghost_4 = pygame.transform.scale(ghost_4, (size, size))
-
+    
+    # background image loaded
     bg = pygame.image.load("img/background.png")
     screen.blit(bg, (0,0))  
-
+    
+    # adds ghostimages to screen
     screen.blit(ghost_1, (ghost_1_x, ghost_1_y))
     screen.blit(ghost_2, (ghost_2_x, ghost_2_y))
     screen.blit(ghost_3, (ghost_3_x, ghost_3_y))
     screen.blit(ghost_4, (ghost_4_x, ghost_4_y))
-
+    # Draws yellow circle that will be identified as pacman
     pacman = pygame.draw.circle(screen, (255, 255, 0), (pac.x, pac.y), 6)
+    
     for event in pygame.event.get():
+        # If a certain key is pressed
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
                 pressed_up = True           
@@ -64,6 +71,7 @@ while True:
                 pressed_left = True
             elif event.key == pygame.K_RIGHT:
                pressed_right = True
+            # When the key is released
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_UP:
                 pressed_up = False
@@ -73,7 +81,7 @@ while True:
                 pressed_left = False
             elif event.key == pygame.K_RIGHT:
                 pressed_right = False
-
+    # sets values for speed, allows pacman to move
     if pressed_left:
         x_speed = -2
         y_speed = 0
@@ -87,17 +95,19 @@ while True:
     if pressed_down: 
         y_speed = 2
         x_speed = 0
-
+    # Gives pacman directions on which direction to move in
     pac.x += x_speed
     pac.y += y_speed
-
+    `
+    # If the pacman goes off the screen, it comes back in on the other side
     if pac.x > 650:
         pac.x = 0
         pac.y = pac.y
     elif pac.x < 0:
         pac.x = 650
         pac.y = pac.y
-
+    
+    # List of wallas in pacman maze
     walls = [
         pygame.Rect(54, 54, 63, 44),
         pygame.Rect(159, 54, 83, 44),
@@ -148,13 +158,15 @@ while True:
     ]
     for rect in walls:
         pygame.draw.rect(screen, (0, 255, 50), rect, -1)
+        # If pacman collides with a wall, it cannot go through it
         if pacman.colliderect(rect):
             if x_speed != 0:
                 x_speed = -x_speed
             if y_speed != 0:
                 y_speed = -y_speed
     pygame.display.flip()
-
+    
+    # How ghosts follow pacman
     if ghost_1_x <= pac.x:
         ghost_1_x += 1
     if ghost_1_x >= pac.x:
@@ -190,7 +202,8 @@ while True:
         ghost_4_y += 1
     if ghost_4_y >= pac.y:
         ghost_4_y -= 1
-
+    
+    # If pacman collides with the ghost, the game ends
     if pac.x <= ghost_1_x and pac.x >= ghost_1_x and pac.y <= ghost_1_y and pac.y >= ghost_1_y:
         sys.exit()
     if pac.x <= ghost_2_x and pac.x >= ghost_2_x and pac.y <= ghost_2_y and pac.y >= ghost_2_y:
@@ -199,7 +212,7 @@ while True:
         sys.exit()  
     if pac.x <= ghost_4_x and pac.x >= ghost_4_x and pac.y <= ghost_4_y and pac.y >= ghost_4_y:
         sys.exit()
-
+    # If the escape key is hit, pygame immediately terminates.
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_ESCAPE:
             sys.exit()
