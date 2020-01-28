@@ -49,7 +49,7 @@ while True:
     ghost_4 = pygame.transform.scale(ghost_4, (size, size))
     
     # background image loaded
-    bg = pygame.image.load("img/background.png")
+    bg = pygame.image.load("img/pacman.png")
     screen.blit(bg, (0,0))  
     
     # adds ghostimages to screen
@@ -98,7 +98,7 @@ while True:
     # Gives pacman directions on which direction to move in
     pac.x += x_speed
     pac.y += y_speed
-    `
+    
     # If the pacman goes off the screen, it comes back in on the other side
     if pac.x > 650:
         pac.x = 0
@@ -168,18 +168,18 @@ while True:
     
     # How ghosts follow pacman
     if ghost_1_x <= pac.x:
-        ghost_1_x += 1
+        ghost_1_x += 1.5
     if ghost_1_x >= pac.x:
-        ghost_1_x -= 1
+        ghost_1_x -= 1.5
     if ghost_1_y <= pac.y:
-        ghost_1_y += 1
+        ghost_1_y += 1.5
     if ghost_1_y >= pac.y:
-        ghost_1_y -= 1
+        ghost_1_y -= 1.5
 
     if ghost_2_x <= pac.x:
-        ghost_2_x += 1
+        ghost_2_x += 1.5
     if ghost_2_x >= pac.x:
-        ghost_2_x -= 1
+        ghost_2_x -= 1.5
     if ghost_2_y <= pac.y:
         ghost_2_y += 1
     if ghost_2_y >= pac.y:
@@ -204,13 +204,13 @@ while True:
         ghost_4_y -= 1
     
     # If pacman collides with the ghost, the game ends
-    if pac.x <= ghost_1_x and pac.x >= ghost_1_x and pac.y <= ghost_1_y and pac.y >= ghost_1_y:
+    if pac.x <= ghost_1_x + 20 and pac.x >= ghost_1_x and pac.y <= ghost_1_y + 20 and pac.y >= ghost_1_y:
         sys.exit()
-    if pac.x <= ghost_2_x and pac.x >= ghost_2_x and pac.y <= ghost_2_y and pac.y >= ghost_2_y:
+    if pac.x <= ghost_2_x + 20 and pac.x >= ghost_2_x and pac.y <= ghost_2_y + 20 and pac.y >= ghost_2_y:
         sys.exit()
-    if pac.x <= ghost_3_x and pac.x >= ghost_3_x and pac.y <= ghost_3_y and pac.y >= ghost_3_y:
+    if pac.x <= ghost_3_x +20 and pac.x >= ghost_3_x and pac.y <= ghost_3_y + 20 and pac.y >= ghost_3_y:
         sys.exit()  
-    if pac.x <= ghost_4_x and pac.x >= ghost_4_x and pac.y <= ghost_4_y and pac.y >= ghost_4_y:
+    if pac.x <= ghost_4_x +20 and pac.x >= ghost_4_x and pac.y <= ghost_4_y + 20 and pac.y >= ghost_4_y:
         sys.exit()
     # If the escape key is hit, pygame immediately terminates.
     if event.type == pygame.KEYDOWN:
